@@ -1,35 +1,39 @@
+
 <!DOCTYPE html>
 <html>
 <head>
   <title>School ERP</title>
 </head>
 <body>
-  <h2>School ERP Dashboard</h2>
 
-  <button onclick="loadStudents()">Load Students</button>
+<h2>School ERP Dashboard</h2>
 
-  <pre id="output"></pre>
+<button onclick="loadStudents()">Load Students</button>
 
-  <script type="module">
-    import { db } from "./firebase.js";
-    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+<pre id="output"></pre>
 
-    async function loadStudents() {
-      const output = document.getElementById("output");
-      output.innerText = "Loading...";
+<script type="module">
+import { db } from "./firebase.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-      const querySnapshot = await getDocs(collection(db, "schools", "school1", "students"));
-      let data = "";
+async function loadStudents() {
+  const output = document.getElementById("output");
+  output.innerText = "Loading...";
 
-      querySnapshot.forEach((doc) => {
-        data += JSON.stringify(doc.data()) + "\n";
-      });
+  const querySnapshot = await getDocs(
+    collection(db, "schools", "school1", "students")
+  );
 
-      output.innerText = data;
-    }
+  let data = "";
+  querySnapshot.forEach((doc) => {
+    data += JSON.stringify(doc.data()) + "\n";
+  });
 
-    window.loadStudents = loadStudents;
-  </script>
+  output.innerText = data || "No students found";
+}
+
+window.loadStudents = loadStudents;
+</script>
 
 </body>
 </html>
