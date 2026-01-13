@@ -2,53 +2,66 @@
 <html>
 <head>
   <title>School ERP</title>
-  <style>
-    table { border-collapse: collapse; margin-top:10px; }
-    td, th { border:1px solid black; padding:5px; }
-    input { margin:4px; }
-  </style>
 </head>
 <body>
 
 <h2>School ERP Dashboard</h2>
 
+<!-- ================= STUDENTS ================= -->
+
+<h3>Add Student</h3>
+<input id="sname" placeholder="Student Name">
+<input id="sclass" placeholder="Class">
+<input id="sroll" placeholder="Roll">
+<button onclick="addStudent()">Add Student</button>
+
+<br><br>
 <button onclick="loadStudents()">Load Students</button>
 
-<table>
-  <thead>
-    <tr><th>Name</th><th>Class</th><th>Roll</th></tr>
-  </thead>
-  <tbody id="students"></tbody>
+<table border="1">
+<tr>
+  <th>Name</th><th>Class</th><th>Roll</th><th>Delete</th>
+</tr>
+<tbody id="students"></tbody>
 </table>
 
 <hr>
+
+<!-- ================= TEACHERS ================= -->
 
 <h3>Add Teacher</h3>
 <input id="tname" placeholder="Teacher Name">
 <input id="tsubject" placeholder="Subject">
 <input id="tphone" placeholder="Phone">
-<button onclick="addTeacher()">Add</button>
+<button onclick="addTeacher()">Add Teacher</button>
 
-<h3>Teachers</h3>
-<table>
-  <thead>
-    <tr><th>Name</th><th>Subject</th><th>Phone</th><th>Delete</th></tr>
-  </thead>
-  <tbody id="teachers"></tbody>
+<br><br>
+<button onclick="loadTeachers()">Load Teachers</button>
+
+<table border="1">
+<tr>
+  <th>Name</th><th>Subject</th><th>Phone</th><th>Delete</th>
+</tr>
+<tbody id="teachers"></tbody>
 </table>
 
 <script type="module">
 import { db } from "./firebase.js";
-import { collection, getDocs, addDoc, deleteDoc, doc } 
-from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-/* ---------------- STUDENTS ---------------- */
+/* ================= STUDENTS ================= */
 
 async function loadStudents(){
   const table = document.getElementById("students");
   table.innerHTML = "";
-
   const snap = await getDocs(collection(db,"schools","school1","students"));
+
   snap.forEach(d=>{
     const s = d.data();
     table.innerHTML += `
@@ -56,18 +69,33 @@ async function loadStudents(){
         <td>${s.name}</td>
         <td>${s.class}</td>
         <td>${s.roll}</td>
+        <td><button onclick="deleteStudent('${d.id}')">X</button></td>
       </tr>
     `;
   });
 }
 
-/* ---------------- TEACHERS ---------------- */
+async function addStudent(){
+  await addDoc(collection(db,"schools","school1","students"),{
+    name: sname.value,
+    class: sclass.value,
+    roll: sroll.value
+  });
+  loadStudents();
+}
+
+async function deleteStudent(id){
+  await deleteDoc(doc(db,"schools","school1","students",id));
+  loadStudents();
+}
+
+/* ================= TEACHERS ================= */
 
 async function loadTeachers(){
   const table = document.getElementById("teachers");
   table.innerHTML = "";
-
   const snap = await getDocs(collection(db,"schools","school1","teachers"));
+
   snap.forEach(d=>{
     const t = d.data();
     table.innerHTML += `
@@ -82,23 +110,11 @@ async function loadTeachers(){
 }
 
 async function addTeacher(){
-  const name = document.getElementById("tname").value;
-  const subject = document.getElementById("tsubject").value;
-  const phone = document.getElementById("tphone").value;
-
-  if(!name || !subject || !phone){
-    alert("Fill all fields");
-    return;
-  }
-
   await addDoc(collection(db,"schools","school1","teachers"),{
-    name, subject, phone
+    name: tname.value,
+    subject: tsubject.value,
+    phone: tphone.value
   });
-
-  document.getElementById("tname").value="";
-  document.getElementById("tsubject").value="";
-  document.getElementById("tphone").value="";
-
   loadTeachers();
 }
 
@@ -107,12 +123,18 @@ async function deleteTeacher(id){
   loadTeachers();
 }
 
+/* expose to html */
 window.loadStudents = loadStudents;
+window.addStudent = addStudent;
+window.deleteStudent = deleteStudent;
+
+window.loadTeachers = loadTeachers;
 window.addTeacher = addTeacher;
 window.deleteTeacher = deleteTeacher;
 
 loadStudents();
 loadTeachers();
+
 </script>
 
 </body>
