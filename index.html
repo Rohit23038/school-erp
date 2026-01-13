@@ -7,50 +7,82 @@
 
 <h2>School ERP Dashboard</h2>
 
-<button onclick="loadStudents()">Load Students</button>
+<h3>Add Student</h3>
+<input id="name" placeholder="Student Name">
+<input id="class" placeholder="Class">
+<input id="roll" placeholder="Roll">
+<button onclick="addStudent()">Add Student</button>
 
-<br><br>
+<hr>
+
+<button onclick="loadStudents()">Load Students</button>
 
 <table border="1" id="table">
   <tr>
     <th>Name</th>
     <th>Class</th>
     <th>Roll</th>
+    <th>Delete</th>
   </tr>
 </table>
 
 <script type="module">
 import { db } from "./firebase.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { collection, getDocs, addDoc, deleteDoc, doc } 
+from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-async function loadStudents() {
+const studentRef = collection(db, "schools", "school1", "students");
+
+window.loadStudents = async function () {
   const table = document.getElementById("table");
-
   table.innerHTML = `
     <tr>
       <th>Name</th>
       <th>Class</th>
       <th>Roll</th>
+      <th>Delete</th>
     </tr>
   `;
 
-  const querySnapshot = await getDocs(
-    collection(db, "schools", "school1", "students")
-  );
-
-  querySnapshot.forEach((doc) => {
-    const d = doc.data();
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${d.name}</td>
-      <td>${d.class}</td>
-      <td>${d.roll}</td>
+  const snap = await getDocs(studentRef);
+  snap.forEach((docu) => {
+    const s = docu.data();
+    table.innerHTML += `
+      <tr>
+        <td>${s.name}</td>
+        <td>${s.class}</td>
+        <td>${s.roll}</td>
+        <td><button onclick="deleteStudent('${docu.id}')">X</button></td>
+      </tr>
     `;
-    table.appendChild(row);
   });
-}
+};
 
-window.loadStudents = loadStudents;
+window.addStudent = async function () {
+  const name = document.getElementById("name").value;
+  const cls = document.getElementById("class").value;
+  const roll = document.getElementById("roll").value;
+
+  if (!name || !cls || !roll) {
+    alert("Fill all fields");
+    return;
+  }
+
+  await addDoc(studentRef, {
+    name: name,
+    class: cls,
+    roll: roll
+  });
+
+  alert("Student added");
+  loadStudents();
+};
+
+window.deleteStudent = async function (id) {
+  await deleteDoc(doc(studentRef, id));
+  loadStudents();
+};
+
 </script>
 
 </body>
