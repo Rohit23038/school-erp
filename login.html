@@ -1,51 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>School ERP Login</title>
+  <style>
+    body{
+      font-family:Arial;
+      background:#f4f6fb;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .box{
+      background:white;
+      padding:25px;
+      width:320px;
+      border-radius:10px;
+      box-shadow:0 0 15px rgba(0,0,0,.15);
+      text-align:center;
+    }
+    input,button{
+      width:100%;
+      padding:10px;
+      margin-top:10px;
+    }
+    button{
+      background:#2563eb;
+      color:white;
+      border:none;
+      cursor:pointer;
+    }
+    #msg{
+      color:red;
+      margin-top:10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h3>School ERP Login</h3>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p id="msg"></p>
+</div>
+
 <script type="module">
   import { auth } from "./firebase.js";
-  import { signInWithEmailAndPassword } 
-    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc } 
-    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-  import { app } from "./firebase.js";
-
-  const db = getFirestore(app);
+  import { signInWithEmailAndPassword } from
+    "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
   const email = document.getElementById("email");
   const password = document.getElementById("password");
   const msg = document.getElementById("msg");
 
-  document.getElementById("loginBtn").onclick = async () => {
-    try {
-      const userCred = await signInWithEmailAndPassword(
+  window.login = async function(){
+    try{
+      await signInWithEmailAndPassword(
         auth,
         email.value,
         password.value
       );
-
-      const uid = userCred.user.uid;
-
-      // 🔹 Firestore se role lao
-      const ref = doc(db, "schools", "school1", "users", uid);
-      const snap = await getDoc(ref);
-
-      if (!snap.exists()) {
-        msg.innerText = "User role not found";
-        return;
-      }
-
-      const role = snap.data().role;
-
-      // 🔹 Role based redirect
-      if (role === "admin") {
-        window.location.href = "index.html";
-      } else if (role === "teacher") {
-        window.location.href = "index.html";
-      } else if (role === "student") {
-        window.location.href = "index.html";
-      } else {
-        msg.innerText = "Invalid role";
-      }
-
-    } catch (e) {
+      window.location.href = "index.html";
+    }catch(e){
       msg.innerText = e.message;
     }
-  };
+  }
 </script>
+
+</body>
+</html>
