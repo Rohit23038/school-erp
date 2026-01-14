@@ -3,71 +3,68 @@
 <head>
   <title>School ERP Login</title>
   <style>
-    body{
-      font-family:Arial;
-      background:#f4f6fb;
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
+    body {
+      font-family: Arial;
+      background: #f4f6fb;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    .box{
-      background:white;
-      padding:25px;
-      width:320px;
-      border-radius:10px;
-      box-shadow:0 0 15px rgba(0,0,0,.15);
-      text-align:center;
+    .box {
+      background: white;
+      padding: 25px;
+      width: 320px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,.15);
+      text-align: center;
     }
-    input,button{
-      width:100%;
-      padding:10px;
-      margin-top:10px;
+    input, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
     }
-    button{
-      background:#2563eb;
-      color:white;
-      border:none;
-      cursor:pointer;
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
     }
-    #msg{
-      color:red;
-      margin-top:10px;
+    #msg {
+      color: red;
+      font-size: 14px;
     }
   </style>
 </head>
+
 <body>
+  <div class="box">
+    <h3>School ERP Login</h3>
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button id="loginBtn">Login</button>
+    <p id="msg"></p>
+  </div>
 
-<div class="box">
-  <h3>School ERP Login</h3>
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-  <p id="msg"></p>
-</div>
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import { signInWithEmailAndPassword } 
+      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-<script type="module">
-  import { auth } from "./firebase.js";
-  import { signInWithEmailAndPassword } from
-    "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    const btn = document.getElementById("loginBtn");
+    const msg = document.getElementById("msg");
 
-  const email = document.getElementById("email");
-  const password = document.getElementById("password");
-  const msg = document.getElementById("msg");
+    btn.addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-  window.login = async function(){
-    try{
-      await signInWithEmailAndPassword(
-        auth,
-        email.value,
-        password.value
-      );
-      window.location.href = "index.html";
-    }catch(e){
-      msg.innerText = e.message;
-    }
-  }
-</script>
-
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "index.html";
+      } catch (e) {
+        msg.innerText = e.message;
+      }
+    });
+  </script>
 </body>
 </html>
