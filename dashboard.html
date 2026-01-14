@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ERP Dashboard</title>
+<style>
+body{
+  font-family:Arial;
+  background:#f4f6fb;
+  padding:20px;
+}
+.card{
+  background:white;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:20px;
+  box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+h2{color:#2b6cff;}
+.hidden{display:none;}
+button{
+  background:#2b6cff;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+
+<h2 id="welcome"></h2>
+
+<div id="admin" class="card hidden">
+  <h3>Admin Panel</h3>
+  <p>You can manage everything</p>
+  <a href="index.html">Open ERP</a>
+</div>
+
+<div id="teacher" class="card hidden">
+  <h3>Teacher Panel</h3>
+  <p>Students & Attendance</p>
+  <a href="index.html">Open ERP</a>
+</div>
+
+<div id="student" class="card hidden">
+  <h3>Student Panel</h3>
+  <p>View Fees & Attendance</p>
+  <a href="index.html">Open ERP</a>
+</div>
+
+<button onclick="logout()">Logout</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "schoolerp-cb790.firebaseapp.com",
+  projectId: "schoolerp-cb790"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, async user=>{
+  if(!user){
+    window.location="login.html";
+    return;
+  }
+
+  const uid = user.uid;
+  const ref = doc(db,"schools","school1","users",uid);
+  const snap = await getDoc(ref);
+
+  if(!snap.exists()){
+    alert("No role assigned");
+    return;
+  }
+
+  const data = snap.data();
+  welcome.innerText = "Welcome " + data.role;
+
+  if(data.role=="admin") admin.classList.remove("hidden");
+  if(data.role=="teacher") teacher.classList.remove("hidden");
+  if(data.role=="student") student.classList.remove("hidden");
+});
+
+window.logout = ()=>{
+  signOut(auth);
+}
+</script>
+</body>
+</html>
