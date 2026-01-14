@@ -14,71 +14,51 @@
     .box{
       background:white;
       padding:25px;
-      width:320px;
       border-radius:10px;
-      box-shadow:0 0 10px rgba(0,0,0,.1);
+      width:320px;
+      box-shadow:0 10px 25px rgba(0,0,0,.1);
     }
     input,button{
       width:100%;
       padding:10px;
-      margin-top:10px;
+      margin:10px 0;
     }
     button{
-      background:#2563eb;
+      background:#2b6cff;
       color:white;
       border:none;
-      border-radius:5px;
+      cursor:pointer;
     }
-    #msg{
-      color:red;
-      margin-top:10px;
-      text-align:center;
-    }
+    #msg{color:red;text-align:center;}
   </style>
 </head>
 
 <body>
+  <div class="box">
+    <h3>School ERP Login</h3>
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button id="loginBtn">Login</button>
+    <p id="msg"></p>
+  </div>
 
-<div class="box">
-  <h2>School ERP Login</h2>
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import { signInWithEmailAndPassword } 
+      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-
-  <p id="msg"></p>
-</div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-
-  // ✅ YOUR REAL FIREBASE CONFIG
-  const firebaseConfig = {
-    apiKey: "AIzaSyAw6mNbrIILP9fNNSzAXuPEUsN7x3T0dsY",
-    authDomain: "schoolerp-cb790.firebaseapp.com",
-    projectId: "schoolerp-cb790",
-    storageBucket: "schoolerp-cb790.firebasestorage.app",
-    messagingSenderId: "1098794553484",
-    appId: "1:1098794553484:web:b8d2abe9b829f8fa7d2ba9"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  window.login = async function () {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
     const msg = document.getElementById("msg");
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      window.location.href = "index.html";
-    } catch (e) {
-      msg.innerText = e.message;
-    }
-  }
-</script>
-
+    document.getElementById("loginBtn").onclick = async () => {
+      try{
+        await signInWithEmailAndPassword(auth, email.value, password.value);
+        window.location.href = "index.html";
+      }catch(e){
+        msg.innerText = e.message;
+      }
+    };
+  </script>
 </body>
 </html>
