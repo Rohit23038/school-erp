@@ -13,6 +13,7 @@
   <option value="11">11</option>
   <option value="12">12</option>
 </select>
+
 <button onclick="loadStudents()">Load Students</button>
 
 <hr>
@@ -23,7 +24,7 @@
       <th>Name</th>
       <th>Roll</th>
       <th>Attendance (%)</th>
-      <th>Update</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody id="studentTable"></tbody>
@@ -58,14 +59,14 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // 🔐 Check login
+  // 🔐 Login check
   onAuthStateChanged(auth, (user) => {
     if (!user) {
       window.location.href = "login.html";
     }
   });
 
-  // 📥 Load students class-wise
+  // 📋 Load students
   window.loadStudents = async function () {
     const cls = document.getElementById("classSelect").value;
     const table = document.getElementById("studentTable");
@@ -78,23 +79,22 @@
 
     const snap = await getDocs(q);
 
-    snap.forEach((docSnap) => {
-      const s = docSnap.data();
-      const row = document.createElement("tr");
+    snap.forEach((d) => {
+      const s = d.data();
 
+      const row = document.createElement("tr");
       row.innerHTML = `
         <td>${s.name}</td>
         <td>${s.roll}</td>
         <td>
-          <input type="number" id="att-${docSnap.id}" value="${s.attendance}">
+          <input type="number" id="att-${d.id}" value="${s.attendance}">
         </td>
         <td>
-          <button onclick="updateAttendance('${docSnap.id}')">
+          <button onclick="updateAttendance('${d.id}')">
             Update
           </button>
         </td>
       `;
-
       table.appendChild(row);
     });
   };
