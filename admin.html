@@ -8,66 +8,56 @@
 <h2>Admin Dashboard</h2>
 
 <hr>
-
 <h3>Add / Update Student</h3>
 
-<p>
-  UID (Auth UID):
-  <input id="uid" placeholder="Student UID">
-</p>
-
-<p>
-  Name:
-  <input id="name">
-</p>
-
-<p>
-  Class:
-  <input id="class">
-</p>
-
-<p>
-  Roll:
-  <input id="roll">
-</p>
-
-<p>
-  Total Fee:
-  <input id="totalFee" type="number">
-</p>
-
-<p>
-  Paid Fee:
-  <input id="paidFee" type="number">
-</p>
-
-<p>
-  Attendance (%):
-  <input id="attendance" type="number">
-</p>
+<p>Student UID (Auth UID): <input id="s_uid"></p>
+<p>Name: <input id="s_name"></p>
+<p>Class: <input id="s_class"></p>
+<p>Roll: <input id="s_roll"></p>
+<p>Total Fee: <input id="s_total"></p>
+<p>Paid Fee: <input id="s_paid"></p>
+<p>Attendance (%): <input id="s_att"></p>
 
 <button onclick="saveStudent()">Save / Update Student</button>
 
 <hr>
-
 <h3>Delete Student</h3>
-<input id="deleteUid" placeholder="Student UID">
-<button onclick="deleteStudent()">Delete</button>
+<p>Student UID: <input id="del_s_uid"></p>
+<button onclick="deleteStudent()">Delete Student</button>
 
 <hr>
+<h3>Add / Update Teacher</h3>
 
+<p>Teacher UID (Auth UID): <input id="t_uid"></p>
+<p>Name: <input id="t_name"></p>
+<p>Email: <input id="t_email"></p>
+<p>Subject: <input id="t_subject"></p>
+
+<button onclick="saveTeacher()">Save / Update Teacher</button>
+
+<hr>
+<h3>Delete Teacher</h3>
+<p>Teacher UID: <input id="del_t_uid"></p>
+<button onclick="deleteTeacher()">Delete Teacher</button>
+
+<br><br>
 <button onclick="logout()">Logout</button>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-  import {
-    getFirestore,
-    doc,
-    setDoc,
-    deleteDoc
+  import { 
+    getAuth, 
+    onAuthStateChanged, 
+    signOut 
+  } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { 
+    getFirestore, 
+    doc, 
+    setDoc, 
+    deleteDoc 
   } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
+  // 🔥 Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyAw6mNbrIILP9fNNSzAXuPEUsN7x3T0dsY",
     authDomain: "schoolerp-cb790.firebaseapp.com",
@@ -81,59 +71,81 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // 🔐 Admin login check
+  // 🔐 ADMIN LOGIN CHECK
   onAuthStateChanged(auth, (user) => {
     if (!user) {
       window.location.href = "login.html";
     }
   });
 
-  // ➕ Add / Update student
-  window.saveStudent = async function () {
-    const uid = uidInput();
-    if (!uid) return alert("UID required");
+  // ================= STUDENT =================
 
-    await setDoc(
-      doc(db, "schools", "school1", "students", uid),
-      {
-        name: value("name"),
-        class: value("class"),
-        roll: value("roll"),
-        totalFee: Number(value("totalFee")),
-        paidFee: Number(value("paidFee")),
-        attendance: Number(value("attendance"))
-      }
-    );
+  window.saveStudent = async function () {
+    const uid = s_uid.value;
+    if (!uid) return alert("Student UID required");
+
+    await setDoc(doc(db, "schools", "school1", "students", uid), {
+      name: s_name.value,
+      class: s_class.value,
+      roll: s_roll.value,
+      totalFee: Number(s_total.value),
+      paidFee: Number(s_paid.value),
+      attendance: Number(s_att.value)
+    });
+
+    // role mapping
+    await setDoc(doc(db, "schools", "school1", "users", uid), {
+      role: "student"
+    });
 
     alert("Student saved / updated");
   };
 
-  // ❌ Delete student
   window.deleteStudent = async function () {
-    const uid = document.getElementById("deleteUid").value;
-    if (!uid) return alert("UID required");
+    const uid = del_s_uid.value;
+    if (!uid) return alert("Student UID required");
 
-    await deleteDoc(
-      doc(db, "schools", "school1", "students", uid)
-    );
+    await deleteDoc(doc(db, "schools", "school1", "students", uid));
+    await deleteDoc(doc(db, "schools", "school1", "users", uid));
 
     alert("Student deleted");
   };
 
-  // 🚪 Logout
+  // ================= TEACHER =================
+
+  window.saveTeacher = async function () {
+    const uid = t_uid.value;
+    if (!uid) return alert("Teacher UID required");
+
+    await setDoc(doc(db, "schools", "school1", "teachers", uid), {
+      name: t_name.value,
+      email: t_email.value,
+      subject: t_subject.value
+    });
+
+    await setDoc(doc(db, "schools", "school1", "users", uid), {
+      role: "teacher"
+    });
+
+    alert("Teacher saved / updated");
+  };
+
+  window.deleteTeacher = async function () {
+    const uid = del_t_uid.value;
+    if (!uid) return alert("Teacher UID required");
+
+    await deleteDoc(doc(db, "schools", "school1", "teachers", uid));
+    await deleteDoc(doc(db, "schools", "school1", "users", uid));
+
+    alert("Teacher deleted");
+  };
+
+  // 🔓 LOGOUT
   window.logout = function () {
     signOut(auth).then(() => {
       window.location.href = "login.html";
     });
   };
-
-  // helpers
-  function value(id) {
-    return document.getElementById(id).value;
-  }
-  function uidInput() {
-    return document.getElementById("uid").value;
-  }
 </script>
 
 </body>
