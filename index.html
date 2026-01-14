@@ -2,126 +2,140 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>School / College ERP</title>
+<title>Demo College | Official Website</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-  margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #f5f7fb;
-  color: #333;
+:root{
+  --bg:#f5f7fb;
+  --text:#333;
+  --card:#ffffff;
+  --primary:#0b3c91;
+}
+
+body.dark{
+  --bg:#121212;
+  --text:#f1f1f1;
+  --card:#1e1e1e;
+  --primary:#1e88ff;
+}
+
+body{
+  margin:0;
+  font-family:Segoe UI, Arial;
+  background:var(--bg);
+  color:var(--text);
 }
 
 /* NAVBAR */
-nav {
-  background: #0b3c91;
-  padding: 12px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+nav{
+  background:var(--primary);
+  color:white;
+  padding:12px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+nav img{
+  height:40px;
+}
+nav a{
+  color:white;
+  margin-left:15px;
+  text-decoration:none;
+  font-size:14px;
+}
+nav button{
+  margin-left:15px;
+  padding:5px 10px;
+  border:none;
+  border-radius:4px;
+  cursor:pointer;
 }
 
-nav h1 {
-  color: white;
-  margin: 0;
-  font-size: 22px;
+/* BANNER */
+.banner{
+  background:url("https://images.unsplash.com/photo-1523050854058-8df90110c9f1");
+  background-size:cover;
+  background-position:center;
+  height:260px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  text-align:center;
+}
+.banner h1{
+  background:rgba(0,0,0,0.6);
+  padding:15px 25px;
+  border-radius:6px;
 }
 
-nav a {
-  color: white;
-  margin-left: 18px;
-  text-decoration: none;
-  font-size: 14px;
+/* SLIDER */
+.slider{
+  max-width:1000px;
+  margin:30px auto;
+  overflow:hidden;
+  border-radius:8px;
 }
-
-nav a:hover {
-  text-decoration: underline;
+.slides img{
+  width:100%;
+  display:none;
 }
-
-/* HERO */
-.hero {
-  background: linear-gradient(to right, #0b3c91, #145bd6);
-  color: white;
-  padding: 60px 20px;
-  text-align: center;
-}
-
-.hero h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-
-.hero p {
-  font-size: 16px;
-  max-width: 600px;
-  margin: auto;
-}
-
-.hero button {
-  margin-top: 20px;
-  padding: 12px 22px;
-  background: #ffffff;
-  color: #0b3c91;
-  border: none;
-  border-radius: 5px;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.hero button:hover {
-  background: #e6e6e6;
+.slides img.active{
+  display:block;
 }
 
 /* SECTION */
-.section {
-  padding: 40px 20px;
-  max-width: 1000px;
-  margin: auto;
+.section{
+  max-width:1000px;
+  margin:auto;
+  padding:30px 20px;
+}
+.section h2{
+  text-align:center;
+  margin-bottom:20px;
 }
 
-.section h3 {
-  text-align: center;
-  margin-bottom: 25px;
-  font-size: 24px;
+/* NOTICE */
+.notice{
+  background:var(--card);
+  padding:15px;
+  border-left:5px solid var(--primary);
+  margin-bottom:10px;
 }
 
 /* COURSES */
-.courses {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+}
+.box{
+  background:var(--card);
+  padding:18px;
+  border-radius:6px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
 
-.course-box {
-  background: white;
-  padding: 20px;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  text-align: center;
+/* PRINCIPAL */
+.principal{
+  display:flex;
+  gap:20px;
+  align-items:center;
 }
-
-/* FEATURES */
-.features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
-}
-
-.feature {
-  background: white;
-  padding: 18px;
-  border-left: 4px solid #0b3c91;
-  border-radius: 5px;
+.principal img{
+  width:140px;
+  border-radius:50%;
 }
 
 /* FOOTER */
-footer {
-  background: #0b3c91;
-  color: white;
-  text-align: center;
-  padding: 12px;
-  font-size: 13px;
+footer{
+  background:var(--primary);
+  color:white;
+  text-align:center;
+  padding:12px;
+  font-size:13px;
 }
 </style>
 </head>
@@ -130,51 +144,82 @@ footer {
 
 <!-- NAVBAR -->
 <nav>
-  <h1>Demo College ERP</h1>
+  <div>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Graduation_cap.svg">
+  </div>
   <div>
     <a href="index.html">Home</a>
-    <a href="#courses">Courses</a>
-    <a href="#features">Features</a>
     <a href="login.html">Login</a>
     <a href="register.html">Registration</a>
+    <button onclick="toggleDark()">🌙 Dark</button>
   </div>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <h2>Welcome to Demo College</h2>
-  <p>Online Admission, Fees Payment, Attendance & Complete College ERP System</p>
-  <button onclick="location.href='register.html'">Apply Online Admission</button>
+<!-- BANNER -->
+<div class="banner">
+  <h1>Demo College of Higher Education</h1>
+</div>
+
+<!-- SLIDER -->
+<div class="slider">
+  <div class="slides">
+    <img class="active" src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f">
+    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b">
+    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7">
+  </div>
+</div>
+
+<!-- NOTICE -->
+<div class="section">
+  <h2>📢 Notice Board</h2>
+  <div class="notice">Admissions Open for BA / BSc / BSc Ag (2026)</div>
+  <div class="notice">Last Date for Online Registration: 31 March</div>
+  <div class="notice">Online Fee Payment Mandatory</div>
 </div>
 
 <!-- COURSES -->
-<div class="section" id="courses">
-  <h3>Our Courses</h3>
-  <div class="courses">
-    <div class="course-box">BA (Bachelor of Arts)</div>
-    <div class="course-box">BSc (Bachelor of Science)</div>
-    <div class="course-box">BSc Agriculture</div>
-    <div class="course-box">UG All Courses</div>
+<div class="section">
+  <h2>🎓 Courses Offered</h2>
+  <div class="grid">
+    <div class="box">BA – Bachelor of Arts</div>
+    <div class="box">BSc – Bachelor of Science</div>
+    <div class="box">BSc Agriculture</div>
+    <div class="box">UG All Courses</div>
   </div>
 </div>
 
-<!-- FEATURES -->
-<div class="section" id="features">
-  <h3>ERP Features</h3>
-  <div class="features">
-    <div class="feature">✔ Online Student Registration</div>
-    <div class="feature">✔ UPI Fees Payment with Receipt</div>
-    <div class="feature">✔ Attendance Management</div>
-    <div class="feature">✔ Admin & Teacher Panel</div>
-    <div class="feature">✔ Firebase Secure Backend</div>
-    <div class="feature">✔ Mobile Friendly System</div>
+<!-- PRINCIPAL MESSAGE -->
+<div class="section">
+  <h2>🎤 Principal’s Message</h2>
+  <div class="box principal">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+    <p>
+      Welcome to Demo College. Our mission is to provide quality education
+      with discipline, innovation and digital transparency through ERP systems.
+      We wish all students a bright future.
+      <br><br>
+      <b>– Dr. A. K. Sharma (Principal)</b>
+    </p>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
-  © 2026 Demo College | Powered by School ERP System
+  © 2026 Demo College | Powered by School ERP
 </footer>
+
+<script>
+let i=0;
+const slides=document.querySelectorAll(".slides img");
+setInterval(()=>{
+  slides[i].classList.remove("active");
+  i=(i+1)%slides.length;
+  slides[i].classList.add("active");
+},3000);
+
+function toggleDark(){
+  document.body.classList.toggle("dark");
+}
+</script>
 
 </body>
 </html>
