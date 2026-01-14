@@ -2,38 +2,136 @@
 <html>
 <head>
   <title>Online Fee Receipt</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+    }
+
+    .receipt {
+      width: 360px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 15px;
+      border: 2px solid #000;
+    }
+
+    .header {
+      text-align: center;
+    }
+
+    .header img {
+      width: 60px;
+    }
+
+    .header h2 {
+      margin: 5px 0;
+    }
+
+    .stamp {
+      color: green;
+      border: 2px solid green;
+      display: inline-block;
+      padding: 3px 10px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .row {
+      margin: 6px 0;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .qr-box {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .upi-buttons a {
+      display: block;
+      margin: 6px 0;
+      padding: 8px;
+      background: #0a7cff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .print-btn {
+      margin-top: 15px;
+      width: 100%;
+      padding: 8px;
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>Online Fee Receipt</h2>
+<div class="receipt">
 
-<p><b>Name:</b> <span id="name"></span></p>
-<p><b>Class:</b> <span id="class"></span></p>
-<p><b>Amount Paid:</b> ₹<span id="amount"></span></p>
-<p><b>Transaction ID:</b> <span id="txn"></span></p>
-<p><b>Date:</b> <span id="date"></span></p>
+  <!-- HEADER -->
+  <div class="header">
+    <!-- optional logo -->
+    <!-- <img src="school-logo.png"> -->
+    <h2>DEMO SCHOOL</h2>
+    <div class="stamp">PAID / VERIFIED</div>
+  </div>
 
-<br>
-<button onclick="window.print()">Download / Print</button>
+  <hr>
+
+  <!-- DETAILS -->
+  <div class="row"><span class="bold">Receipt No:</span> <span id="receiptNo"></span></div>
+  <div class="row"><span class="bold">Name:</span> Rohit Singh</div>
+  <div class="row"><span class="bold">Class:</span> 12</div>
+  <div class="row"><span class="bold">Amount Paid:</span> ₹12000</div>
+  <div class="row"><span class="bold">Transaction ID:</span> 202601071545557286</div>
+  <div class="row"><span class="bold">Date:</span> <span id="date"></span></div>
+
+  <hr>
+
+  <!-- QR + UPI -->
+  <div class="qr-box">
+    <img id="upiQR" width="160">
+    <p class="bold">Pay via UPI</p>
+
+    <div class="upi-buttons">
+      <a id="upiLink">Open Any UPI App</a>
+      <a href="phonepe://pay">PhonePe</a>
+      <a href="tez://upi/pay">Google Pay</a>
+      <a href="paytmmp://pay">Paytm</a>
+    </div>
+  </div>
+
+  <button class="print-btn" onclick="window.print()">Download / Print</button>
+
+</div>
 
 <script>
-  // 🔹 Read URL parameters
-  const params = new URLSearchParams(window.location.search);
+  // FIXED DATA
+  const upiId = "sarojkumari4440@nyes";
+  const amount = "12000";
+  const name = "Rohit Singh";
 
-  const name = params.get("name");
-  const cls = params.get("class");
-  const amount = params.get("amount");
-  const txn = params.get("txn");
+  // AUTO RECEIPT NUMBER
+  document.getElementById("receiptNo").innerText =
+    "DS-" + Date.now();
 
-  // 🔹 Fill receipt data
-  document.getElementById("name").innerText = name || "-";
-  document.getElementById("class").innerText = cls || "-";
-  document.getElementById("amount").innerText = amount || "0";
-  document.getElementById("txn").innerText = txn || "-";
+  // DATE
+  document.getElementById("date").innerText =
+    new Date().toLocaleDateString("en-IN");
 
-  // 🔹 Current Date
-  const today = new Date().toLocaleDateString("en-IN");
-  document.getElementById("date").innerText = today;
+  // QR GENERATION
+  document.getElementById("upiQR").src =
+    `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
+
+  // DIRECT UPI APP OPEN
+  document.getElementById("upiLink").href =
+    `upi://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
 </script>
 
 </body>
