@@ -1,41 +1,180 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>School ERP Dashboard</title>
+<meta charset="UTF-8">
+<title>School / College ERP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f5f7fb;
+  color: #333;
+}
+
+/* NAVBAR */
+nav {
+  background: #0b3c91;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav h1 {
+  color: white;
+  margin: 0;
+  font-size: 22px;
+}
+
+nav a {
+  color: white;
+  margin-left: 18px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(to right, #0b3c91, #145bd6);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 16px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.hero button {
+  margin-top: 20px;
+  padding: 12px 22px;
+  background: #ffffff;
+  color: #0b3c91;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.hero button:hover {
+  background: #e6e6e6;
+}
+
+/* SECTION */
+.section {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.section h3 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+}
+
+/* COURSES */
+.courses {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.course-box {
+  background: white;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+/* FEATURES */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.feature {
+  background: white;
+  padding: 18px;
+  border-left: 4px solid #0b3c91;
+  border-radius: 5px;
+}
+
+/* FOOTER */
+footer {
+  background: #0b3c91;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  font-size: 13px;
+}
+</style>
 </head>
+
 <body>
-  <h2>Welcome to School ERP Dashboard</h2>
-  <p>Login successful.</p>
 
-  <button onclick="logout()">Logout</button>
+<!-- NAVBAR -->
+<nav>
+  <h1>Demo College ERP</h1>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="#courses">Courses</a>
+    <a href="#features">Features</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Registration</a>
+  </div>
+</nav>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+<!-- HERO -->
+<div class="hero">
+  <h2>Welcome to Demo College</h2>
+  <p>Online Admission, Fees Payment, Attendance & Complete College ERP System</p>
+  <button onclick="location.href='register.html'">Apply Online Admission</button>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAw6mNbrIILP9fNNSzAXuPEUsN7x3T0dsY",
-      authDomain: "schoolerp-cb790.firebaseapp.com",
-      projectId: "schoolerp-cb790",
-      appId: "1:1098794553484:web:b8d2abe9b829f8fa7d2ba9"
-    };
+<!-- COURSES -->
+<div class="section" id="courses">
+  <h3>Our Courses</h3>
+  <div class="courses">
+    <div class="course-box">BA (Bachelor of Arts)</div>
+    <div class="course-box">BSc (Bachelor of Science)</div>
+    <div class="course-box">BSc Agriculture</div>
+    <div class="course-box">UG All Courses</div>
+  </div>
+</div>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+<!-- FEATURES -->
+<div class="section" id="features">
+  <h3>ERP Features</h3>
+  <div class="features">
+    <div class="feature">✔ Online Student Registration</div>
+    <div class="feature">✔ UPI Fees Payment with Receipt</div>
+    <div class="feature">✔ Attendance Management</div>
+    <div class="feature">✔ Admin & Teacher Panel</div>
+    <div class="feature">✔ Firebase Secure Backend</div>
+    <div class="feature">✔ Mobile Friendly System</div>
+  </div>
+</div>
 
-    // 🔐 Protect dashboard
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        window.location.href = "login.html";
-      }
-    });
+<!-- FOOTER -->
+<footer>
+  © 2026 Demo College | Powered by School ERP System
+</footer>
 
-    // 🚪 Logout
-    window.logout = function () {
-      signOut(auth).then(() => {
-        window.location.href = "login.html";
-      });
-    };
-  </script>
 </body>
 </html>
