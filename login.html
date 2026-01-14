@@ -1,64 +1,51 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>School ERP Login</title>
-  <style>
-    body{
-      font-family: Arial;
-      background:#f4f6fb;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-    }
-    .box{
-      background:white;
-      padding:25px;
-      border-radius:10px;
-      width:320px;
-      box-shadow:0 10px 25px rgba(0,0,0,.1);
-    }
-    input,button{
-      width:100%;
-      padding:10px;
-      margin:10px 0;
-    }
-    button{
-      background:#2b6cff;
-      color:white;
-      border:none;
-      cursor:pointer;
-    }
-    #msg{color:red;text-align:center;}
-  </style>
-</head>
+<script type="module">
+  import { auth } from "./firebase.js";
+  import { signInWithEmailAndPassword } 
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } 
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+  import { app } from "./firebase.js";
 
-<body>
-  <div class="box">
-    <h3>School ERP Login</h3>
-    <input id="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
-    <button id="loginBtn">Login</button>
-    <p id="msg"></p>
-  </div>
+  const db = getFirestore(app);
 
-  <script type="module">
-    import { auth } from "./firebase.js";
-    import { signInWithEmailAndPassword } 
-      from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+  const msg = document.getElementById("msg");
 
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-    const msg = document.getElementById("msg");
+  document.getElementById("loginBtn").onclick = async () => {
+    try {
+      const userCred = await signInWithEmailAndPassword(
+        auth,
+        email.value,
+        password.value
+      );
 
-    document.getElementById("loginBtn").onclick = async () => {
-      try{
-        await signInWithEmailAndPassword(auth, email.value, password.value);
-        window.location.href = "index.html";
-      }catch(e){
-        msg.innerText = e.message;
+      const uid = userCred.user.uid;
+
+      // 🔹 Firestore se role lao
+      const ref = doc(db, "schools", "school1", "users", uid);
+      const snap = await getDoc(ref);
+
+      if (!snap.exists()) {
+        msg.innerText = "User role not found";
+        return;
       }
-    };
-  </script>
-</body>
-</html>
+
+      const role = snap.data().role;
+
+      // 🔹 Role based redirect
+      if (role === "admin") {
+        window.location.href = "index.html";
+      } else if (role === "teacher") {
+        window.location.href = "index.html";
+      } else if (role === "student") {
+        window.location.href = "index.html";
+      } else {
+        msg.innerText = "Invalid role";
+      }
+
+    } catch (e) {
+      msg.innerText = e.message;
+    }
+  };
+</script>
