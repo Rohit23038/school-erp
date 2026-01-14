@@ -1,10 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ERP Dashboard</title>
+  <title>School ERP Dashboard</title>
 </head>
 <body>
   <h2>Welcome to School ERP Dashboard</h2>
   <p>Login successful.</p>
+
+  <button onclick="logout()">Logout</button>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAw6mNbrIILP9fNNSzAXuPEUsN7x3T0dsY",
+      authDomain: "schoolerp-cb790.firebaseapp.com",
+      projectId: "schoolerp-cb790",
+      appId: "1:1098794553484:web:b8d2abe9b829f8fa7d2ba9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // 🔐 Protect dashboard
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+      }
+    });
+
+    // 🚪 Logout
+    window.logout = function () {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      });
+    };
+  </script>
 </body>
 </html>
