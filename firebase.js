@@ -1,47 +1,15 @@
+// firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-// ❌ इसको मत बदलना
 const firebaseConfig = {
-  // वही config जो पहले से है
+  apiKey: "AIzaSyAw6mNbrIILP9fNNSzAXuPEUsN7x3T0dsY",
+  authDomain: "schoolerp-cb790.firebaseapp.com",
+  projectId: "schoolerp-cb790",
+  storageBucket: "schoolerp-cb790.firebasestorage.app",
+  messagingSenderId: "1098794553484",
+  appId: "1:1098794553484:web:b8d2abe9b829f8fa7d2ba9"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// ✅ LOGIN FUNCTION
-window.login = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  try {
-    const userCred = await signInWithEmailAndPassword(auth, email, password);
-    const uid = userCred.user.uid;
-
-    const userRef = doc(db, "schools", "school1", "users", uid);
-    const userSnap = await getDoc(userRef);
-
-    if (!userSnap.exists()) {
-      alert("User role nahi mila");
-      return;
-    }
-
-    // ✅ role read
-    const role = userSnap.data().role;
-
-    // ✅ same dashboard, role later handle करेंगे
-    window.location.href = "index.html";
-
-  } catch (err) {
-    alert(err.message);
-  }
-};
-
-// LOGOUT
-window.logout = function () {
-  signOut(auth).then(() => {
-    window.location.href = "login.html";
-  });
-};
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
