@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>School / College ERP Portal</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
@@ -12,72 +11,107 @@ body {
   background: #eef3fb;
 }
 
-/* Header */
-header {
+/* ===== HEADER ===== */
+.top-header {
   background: #0a3d91;
   color: white;
-  padding: 15px;
-  text-align: center;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Layout */
+.header-left h2 {
+  margin: 0;
+}
+
+.header-left p {
+  margin: 2px 0 0;
+  font-size: 13px;
+}
+
+.header-right {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.login-btn {
+  background: white;
+  color: #0a3d91;
+}
+
+.register-btn {
+  background: #ffcc00;
+  color: #000;
+}
+
+/* ===== LAYOUT ===== */
 .container {
   display: flex;
+  padding: 20px;
+  gap: 20px;
 }
 
-/* Sidebar */
+/* ===== SIDEBAR ===== */
 .sidebar {
   width: 260px;
-  background: #f5f8ff;
-  padding: 15px;
 }
 
 .sidebar h3 {
   margin-top: 0;
 }
 
-.menu-item {
+.sidebar a {
+  display: block;
   background: white;
-  margin-bottom: 10px;
   padding: 12px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: #000;
   border-radius: 6px;
-  cursor: pointer;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.menu-item:hover {
-  background: #fff7c2;
+.sidebar a:hover {
+  background: #e3ecff;
 }
 
-/* Main content */
+/* ===== MAIN CONTENT ===== */
 .main {
   flex: 1;
-  padding: 20px;
 }
 
-.banner {
-  background: linear-gradient(135deg, #0a3d91, #1e6fd9);
+.welcome-box {
+  background: #0a3d91;
   color: white;
-  padding: 30px;
-  border-radius: 10px;
-}
-
-.section {
-  background: white;
   padding: 20px;
-  margin-top: 20px;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
-/* Footer */
+.notice-box, .principal-box {
+  background: white;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 8px;
+}
+
+/* ===== FOOTER ===== */
 footer {
   text-align: center;
-  padding: 10px;
-  font-size: 13px;
+  padding: 15px;
   color: #555;
+  font-size: 13px;
 }
 
-/* Mobile */
+/* ===== MOBILE ===== */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -85,62 +119,77 @@ footer {
   .sidebar {
     width: 100%;
   }
+  .top-header {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <h2>School / College ERP Portal</h2>
-  <p>Online Academic Services</p>
+<!-- ===== HEADER ===== -->
+<header class="top-header">
+  <div class="header-left">
+    <h2>School / College ERP Portal</h2>
+    <p>Online Academic Services</p>
+  </div>
+
+  <div class="header-right">
+    <a href="login.html" class="btn login-btn">Login</a>
+    <a href="register.html" class="btn register-btn">New Registration</a>
+  </div>
 </header>
 
+<!-- ===== BODY ===== -->
 <div class="container">
 
-  <!-- LEFT SIDEBAR -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
     <h3>Online Portals</h3>
 
-    <div class="menu-item" onclick="location.href='register.html'">Student Registration</div>
-    <div class="menu-item">Academic Activity</div>
-    <div class="menu-item">Result</div>
-    <div class="menu-item">Admission / Examination</div>
-    <div class="menu-item">Syllabus</div>
-    <div class="menu-item">Entrance</div>
-    <div class="menu-item">Online Services</div>
-    <div class="menu-item">Affiliation</div>
-    <div class="menu-item">Web Mail</div>
+    <a href="register.html">📝 Student Registration</a>
+    <a href="#">📘 Academic Activity</a>
+    <a href="#">📊 Result</a>
+    <a href="#">🎓 Admission / Examination</a>
+    <a href="#">📚 Syllabus</a>
+    <a href="#">🔍 Entrance</a>
+    <a href="#">💻 Online Services</a>
+    <a href="#">🏫 Affiliation</a>
+    <a href="#">📧 Web Mail</a>
   </div>
 
-  <!-- RIGHT MAIN CONTENT -->
+  <!-- MAIN CONTENT -->
   <div class="main">
 
-    <div class="banner">
+    <div class="welcome-box">
       <h2>Welcome to College ERP System</h2>
       <p>Admissions • Fees • Attendance • Results</p>
     </div>
 
-    <div class="section">
+    <div class="notice-box">
       <h3>Latest Notices</h3>
       <ul>
-        <li>Online Admission Open</li>
-        <li>Exam Form Last Date: 30 Jan</li>
-        <li>Fee Payment Available Online</li>
+        <li>📌 Online Admission Open</li>
+        <li>📌 Exam Form Last Date: 30 Jan</li>
+        <li>📌 Online Fee Payment Available</li>
       </ul>
     </div>
 
-    <div class="section">
+    <div class="principal-box">
       <h3>Principal’s Message</h3>
       <p>
         Welcome to our digital ERP system.  
-        This platform ensures transparency, speed, and convenience for students.
+        This platform ensures transparency, fast services,
+        and better communication for students.
       </p>
     </div>
 
   </div>
 </div>
 
+<!-- ===== FOOTER ===== -->
 <footer>
   © 2026 School ERP System
 </footer>
