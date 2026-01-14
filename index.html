@@ -2,214 +2,44 @@
 <html>
 <head>
 <title>School ERP</title>
-
-<style>
-body{
-  font-family: Arial;
-  background:#f4f6fb;
-  padding:20px;
-}
-
-h2{
-  background:#2b6cff;
-  color:white;
-  padding:12px;
-  border-radius:8px;
-}
-
-h3{
-  color:#2b6cff;
-}
-
-input{
-  padding:8px;
-  margin:5px;
-  border:1px solid #ccc;
-  border-radius:6px;
-}
-
-button{
-  background:#2b6cff;
-  color:white;
-  border:none;
-  padding:8px 14px;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-button:hover{
-  background:#1f53cc;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:10px;
-  background:white;
-}
-
-th{
-  background:#2b6cff;
-  color:white;
-  padding:8px;
-}
-
-td{
-  padding:8px;
-  text-align:center;
-  border-bottom:1px solid #ddd;
-}
-
-.section{
-  background:white;
-  padding:15px;
-  border-radius:10px;
-  margin-bottom:20px;
-  box-shadow:0 2px 8px rgba(0,0,0,.1);
-}
-</style>
 </head>
-
 <body>
-
-<h2>School ERP Dashboard</h2>
-
-<div class="section">
-<h3>Add Student</h3>
-<input id="sname" placeholder="Student Name">
-<input id="sclass" placeholder="Class">
-<input id="sroll" placeholder="Roll">
-<button onclick="addStudent()">Add Student</button>
-
-<button onclick="loadStudents()">Load Students</button>
-<table>
-<thead><tr><th>Name</th><th>Class</th><th>Roll</th><th>Delete</th></tr></thead>
-<tbody id="students"></tbody>
-</table>
-</div>
-
-<div class="section">
-<h3>Add Teacher</h3>
-<input id="tname" placeholder="Teacher Name">
-<input id="tsubject" placeholder="Subject">
-<input id="tphone" placeholder="Phone">
-<button onclick="addTeacher()">Add Teacher</button>
-
-<button onclick="loadTeachers()">Load Teachers</button>
-<table>
-<thead><tr><th>Name</th><th>Subject</th><th>Phone</th><th>Delete</th></tr></thead>
-<tbody id="teachers"></tbody>
-</table>
-</div>
-
-<div class="section">
-<h3>Student Fees</h3>
-<input id="fid" placeholder="Student ID">
-<input id="ftotal" placeholder="Total Fee">
-<input id="fpaid" placeholder="Paid Amount">
-<button onclick="saveFee()">Save Fee</button>
-
-<button onclick="loadFees()">Load Fees</button>
-<table>
-<thead><tr><th>Student</th><th>Total</th><th>Paid</th><th>Pending</th></tr></thead>
-<tbody id="fees"></tbody>
-</table>
-</div>
+Loading...
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
 const firebaseConfig = {
- apiKey: "YOUR_KEY",
- authDomain: "schoolerp-cb790.firebaseapp.com",
- projectId: "schoolerp-cb790"
+  // 🔴 यही firebaseConfig firebase.js से paste करो
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-// STUDENTS
-async function loadStudents(){
-  const table=document.getElementById("students");
-  table.innerHTML="";
-  const snap=await getDocs(collection(db,"schools","school1","students"));
-  snap.forEach(d=>{
-    let s=d.data();
-    table.innerHTML+=`<tr><td>${s.name}</td><td>${s.class}</td><td>${s.roll}</td>
-    <td><button onclick="deleteStudent('${d.id}')">X</button></td></tr>`;
-  });
-}
-async function addStudent(){
- await addDoc(collection(db,"schools","school1","students"),{
-   name:sname.value,
-   class:sclass.value,
-   roll:sroll.value
- });
- loadStudents();
-}
-async function deleteStudent(id){
- await deleteDoc(doc(db,"schools","school1","students",id));
- loadStudents();
-}
+onAuthStateChanged(auth, async (user) => {
+  if(!user){
+    location.href="login.html";
+    return;
+  }
 
-// TEACHERS
-async function loadTeachers(){
-  const table=document.getElementById("teachers");
-  table.innerHTML="";
-  const snap=await getDocs(collection(db,"schools","school1","teachers"));
-  snap.forEach(d=>{
-    let t=d.data();
-    table.innerHTML+=`<tr><td>${t.name}</td><td>${t.subject}</td><td>${t.phone}</td>
-    <td><button onclick="deleteTeacher('${d.id}')">X</button></td></tr>`;
-  });
-}
-async function addTeacher(){
- await addDoc(collection(db,"schools","school1","teachers"),{
-   name:tname.value,
-   subject:tsubject.value,
-   phone:tphone.value
- });
- loadTeachers();
-}
-async function deleteTeacher(id){
- await deleteDoc(doc(db,"schools","school1","teachers",id));
- loadTeachers();
-}
+  const uid = user.uid;
+  const ref = doc(db,"schools","school1","users",uid);
+  const snap = await getDoc(ref);
 
-// FEES
-async function saveFee(){
- await addDoc(collection(db,"schools","school1","fees"),{
-   student:fid.value,
-   total:Number(ftotal.value),
-   paid:Number(fpaid.value)
- });
- loadFees();
-}
-async function loadFees(){
- const table=document.getElementById("fees");
- table.innerHTML="";
- const snap=await getDocs(collection(db,"schools","school1","fees"));
- snap.forEach(d=>{
-  let f=d.data();
-  let pending=f.total - f.paid;
-  table.innerHTML+=`<tr><td>${f.student}</td><td>${f.total}</td><td>${f.paid}</td><td>${pending}</td></tr>`;
- });
-}
+  if(!snap.exists()){
+    alert("No role assigned");
+    return;
+  }
 
-window.addStudent=addStudent;
-window.deleteStudent=deleteStudent;
-window.loadStudents=loadStudents;
-window.addTeacher=addTeacher;
-window.deleteTeacher=deleteTeacher;
-window.loadTeachers=loadTeachers;
-window.saveFee=saveFee;
-window.loadFees=loadFees;
+  const role = snap.data().role;
 
-loadStudents();
-loadTeachers();
-loadFees();
+  if(role==="admin") location.href="admin.html";
+  if(role==="teacher") location.href="teacher.html";
+  if(role==="student") location.href="student.html";
+});
 </script>
-
 </body>
 </html>
