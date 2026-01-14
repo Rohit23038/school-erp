@@ -2,70 +2,89 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>School ERP | Home</title>
+<title>School / College ERP Portal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #e9f0ff;
+  background: #eef3fb;
 }
 
+/* Header */
 header {
-  background: #003c8f;
+  background: #0a3d91;
   color: white;
   padding: 15px;
   text-align: center;
 }
 
-header h2 {
-  margin: 0;
+/* Layout */
+.container {
+  display: flex;
 }
 
-.container {
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background: #f5f8ff;
+  padding: 15px;
+}
+
+.sidebar h3 {
+  margin-top: 0;
+}
+
+.menu-item {
+  background: white;
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.menu-item:hover {
+  background: #fff7c2;
+}
+
+/* Main content */
+.main {
+  flex: 1;
   padding: 20px;
 }
 
-.section-title {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #003c8f;
-}
-
-.portal-card {
-  background: white;
+.banner {
+  background: linear-gradient(135deg, #0a3d91, #1e6fd9);
+  color: white;
+  padding: 30px;
   border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  cursor: pointer;
 }
 
-.portal-card:hover {
-  background: #f1f5ff;
+.section {
+  background: white;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
 }
 
-.portal-icon {
-  font-size: 28px;
-  width: 40px;
-  text-align: center;
-}
-
-.portal-text {
-  font-size: 18px;
-  color: #003c8f;
-  font-weight: bold;
-}
-
-.footer {
+/* Footer */
+footer {
   text-align: center;
   padding: 10px;
   font-size: 13px;
   color: #555;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+  }
 }
 </style>
 </head>
@@ -79,58 +98,52 @@ header h2 {
 
 <div class="container">
 
-  <div class="section-title">Online Portals</div>
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar">
+    <h3>Online Portals</h3>
 
-  <div class="portal-card" onclick="location.href='register.html'">
-    <div class="portal-icon">📝</div>
-    <div class="portal-text">Student Registration Form</div>
+    <div class="menu-item" onclick="location.href='register.html'">Student Registration</div>
+    <div class="menu-item">Academic Activity</div>
+    <div class="menu-item">Result</div>
+    <div class="menu-item">Admission / Examination</div>
+    <div class="menu-item">Syllabus</div>
+    <div class="menu-item">Entrance</div>
+    <div class="menu-item">Online Services</div>
+    <div class="menu-item">Affiliation</div>
+    <div class="menu-item">Web Mail</div>
   </div>
 
-  <div class="portal-card">
-    <div class="portal-icon">📋</div>
-    <div class="portal-text">Academic Activity</div>
-  </div>
+  <!-- RIGHT MAIN CONTENT -->
+  <div class="main">
 
-  <div class="portal-card">
-    <div class="portal-icon">📊</div>
-    <div class="portal-text">Result</div>
-  </div>
+    <div class="banner">
+      <h2>Welcome to College ERP System</h2>
+      <p>Admissions • Fees • Attendance • Results</p>
+    </div>
 
-  <div class="portal-card">
-    <div class="portal-icon">🎓</div>
-    <div class="portal-text">Admission / Examination Form</div>
-  </div>
+    <div class="section">
+      <h3>Latest Notices</h3>
+      <ul>
+        <li>Online Admission Open</li>
+        <li>Exam Form Last Date: 30 Jan</li>
+        <li>Fee Payment Available Online</li>
+      </ul>
+    </div>
 
-  <div class="portal-card" style="background:#fff9c4">
-    <div class="portal-icon">📚</div>
-    <div class="portal-text">Syllabus</div>
-  </div>
+    <div class="section">
+      <h3>Principal’s Message</h3>
+      <p>
+        Welcome to our digital ERP system.  
+        This platform ensures transparency, speed, and convenience for students.
+      </p>
+    </div>
 
-  <div class="portal-card">
-    <div class="portal-icon">🔍</div>
-    <div class="portal-text">Entrance</div>
   </div>
-
-  <div class="portal-card">
-    <div class="portal-icon">💻</div>
-    <div class="portal-text">Online Services for Students</div>
-  </div>
-
-  <div class="portal-card">
-    <div class="portal-icon">🏫</div>
-    <div class="portal-text">Affiliation</div>
-  </div>
-
-  <div class="portal-card">
-    <div class="portal-icon">📧</div>
-    <div class="portal-text">Web Mail</div>
-  </div>
-
 </div>
 
-<div class="footer">
+<footer>
   © 2026 School ERP System
-</div>
+</footer>
 
 </body>
 </html>
