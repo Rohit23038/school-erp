@@ -1,103 +1,253 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>New Student Registration</title>
+  <title>Student Admission Form | School ERP</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 25px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      margin-top: 25px;
+    }
+
+    .section-title {
+      background: #004aad;
+      color: #fff;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 15px;
+    }
+
+    .row {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .field {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 8px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    .upi-box {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background: #28a745;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #666;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>New Student Registration</h2>
+<div class="container">
 
-<form id="registerForm">
-  <p>Name: <input type="text" id="name" required></p>
-  <p>Class: <input type="text" id="class" required></p>
-  <p>Email: <input type="email" id="email" required></p>
-  <p>Password: <input type="password" id="password" required></p>
-  <p>Mobile: <input type="text" id="mobile" required></p>
+  <h2>Student Admission / Registration Form</h2>
+  <div class="subtitle">Session 2025–26</div>
 
-  <hr>
+  <!-- STUDENT DETAILS -->
+  <div class="section">
+    <div class="section-title">Student Details</div>
 
-  <h3>Fees Payment</h3>
-  <p><b>Fees Amount:</b> ₹12000</p>
-  <p><b>UPI ID:</b> sarojkumari4440@nyes</p>
+    <div class="row">
+      <div class="field">
+        <label>Student Name</label>
+        <input type="text">
+      </div>
+      <div class="field">
+        <label>Father's Name</label>
+        <input type="text">
+      </div>
+      <div class="field">
+        <label>Mother's Name</label>
+        <input type="text">
+      </div>
+    </div>
 
-  <button type="button" onclick="generateQR()">Generate UPI QR</button><br><br>
+    <div class="row">
+      <div class="field">
+        <label>Aadhaar Number</label>
+        <input type="text" maxlength="12">
+      </div>
+      <div class="field">
+        <label>Mobile Number</label>
+        <input type="text">
+      </div>
+      <div class="field">
+        <label>Alternate Mobile</label>
+        <input type="text">
+      </div>
+    </div>
+  </div>
 
-  <img id="upiQR" width="200"><br><br>
+  <!-- ADDRESS -->
+  <div class="section">
+    <div class="section-title">Address Details</div>
 
-  <p>Transaction ID: <input type="text" id="txnId" required></p>
+    <label>Full Address</label>
+    <textarea rows="3"></textarea>
 
-  <button type="submit">Register & Generate Receipt</button>
-</form>
+    <div class="row">
+      <div class="field">
+        <label>State</label>
+        <input type="text">
+      </div>
+      <div class="field">
+        <label>District</label>
+        <input type="text">
+      </div>
+    </div>
+  </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from
-    "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from
-    "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+  <!-- COURSE -->
+  <div class="section">
+    <div class="section-title">Course Selection</div>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAw6mNbrIILP9fNNSzAXuPEUsN7x3T0dsY",
-    authDomain: "schoolerp-cb790.firebaseapp.com",
-    projectId: "schoolerp-cb790",
-    storageBucket: "schoolerp-cb790.appspot.com",
-    messagingSenderId: "1098794553484",
-    appId: "1:1098794553484:web:b8d2abe9b829f8fa7d2ba9"
-  };
+    <div class="row">
+      <div class="field">
+        <label>Course Type</label>
+        <select>
+          <option>UG</option>
+          <option>PG</option>
+        </select>
+      </div>
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+      <div class="field">
+        <label>Course</label>
+        <select>
+          <option>BA</option>
+          <option>BSc</option>
+          <option>BSc Agriculture</option>
+          <option>BCom</option>
+          <option>BCA</option>
+          <option>BBA</option>
+          <option>MA</option>
+          <option>MSc</option>
+        </select>
+      </div>
+    </div>
+  </div>
 
-  document.getElementById("registerForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+  <!-- LOGIN -->
+  <div class="section">
+    <div class="section-title">Login Details</div>
 
-    const name = nameInput.value;
-    const cls = classInput.value;
-    const email = emailInput.value;
-    const password = passwordInput.value;
-    const mobile = mobileInput.value;
-    const txnId = txnIdInput.value;
+    <div class="row">
+      <div class="field">
+        <label>Email</label>
+        <input type="email">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password">
+      </div>
+    </div>
+  </div>
 
-    try {
-      const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCred.user.uid;
+  <!-- PAYMENT -->
+  <div class="section">
+    <div class="section-title">Fee Payment</div>
 
-      await setDoc(doc(db, "schools", "school1", "students", uid), {
-        name: name,
-        class: cls,
-        mobile: mobile,
-        totalFee: 12000,
-        paidFee: 12000,
-        attendance: 0,
-        txnId: txnId,
-        createdAt: new Date()
-      });
+    <div class="upi-box">
+      <p><b>Admission Fee:</b> ₹12000</p>
+      <p><b>UPI ID:</b> sarojkumari4440@nyes</p>
 
-      window.location.href =
-        `receipt.html?name=${name}&class=${cls}&amount=12000&txn=${txnId}`;
+      <img id="upiQR" width="180"><br><br>
 
-    } catch (err) {
-      alert(err.message);
-    }
-  });
+      <button onclick="generateQR()">Generate UPI QR</button>
 
-  // expose inputs
-  const nameInput = document.getElementById("name");
-  const classInput = document.getElementById("class");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-  const mobileInput = document.getElementById("mobile");
-  const txnIdInput = document.getElementById("txnId");
-</script>
+      <label>Transaction ID</label>
+      <input type="text">
+    </div>
+  </div>
+
+  <button onclick="submitForm()">Submit & Generate Receipt</button>
+
+  <div class="note">
+    Fee amount is fixed. Partial payment is not allowed.
+  </div>
+
+</div>
 
 <script>
   function generateQR() {
     const upi = "sarojkumari4440@nyes";
     const amount = "12000";
-
     document.getElementById("upiQR").src =
       `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=${upi}&am=${amount}&cu=INR`;
+  }
+
+  function submitForm() {
+    alert("Registration Successful");
+    window.location.href = "receipt.html";
   }
 </script>
 
