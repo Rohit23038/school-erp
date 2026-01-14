@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fee Receipt</title>
+</head>
+<body>
+
+<h2>Online Fee Receipt</h2>
+
+<p>Name: <span id="name"></span></p>
+<p>Class: <span id="class"></span></p>
+<p>Amount Paid: ₹<span id="amount"></span></p>
+<p>Transaction ID: <span id="txn"></span></p>
+<p>Date: <span id="date"></span></p>
+
+<button onclick="window.print()">Download / Print</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAw6mNbrIILP9fNNSzAXuPEUsN7x3T0dsY",
+  projectId: "schoolerp-cb790"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const uid = new URLSearchParams(window.location.search).get("uid");
+const snap = await getDoc(doc(db,"schools","school1","receipts",uid));
+
+const d = snap.data();
+name.innerText = d.name;
+class.innerText = d.class;
+amount.innerText = d.amount;
+txn.innerText = d.txn;
+date.innerText = d.date;
+</script>
+
+</body>
+</html>
