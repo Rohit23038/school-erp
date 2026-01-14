@@ -1,82 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Student Panel</title>
+  <title>Student Dashboard</title>
 </head>
 <body>
 
-  <h2>Student Dashboard</h2>
+<h2>Student Dashboard</h2>
 
-  <p><b>Name:</b> <span id="name">Loading...</span></p>
-  <p><b>Class:</b> <span id="class">Loading...</span></p>
+<p><b>Name:</b> <span id="name">Loading...</span></p>
+<p><b>Class:</b> <span id="class">Loading...</span></p>
 
-  <hr>
+<hr>
 
-  <h3>Fees Details</h3>
-  <p>Total Fee: ₹<span id="totalFee">0</span></p>
-  <p>Paid Fee: ₹<span id="paidFee">0</span></p>
-  <p>Due Fee: ₹<span id="dueFee">0</span></p>
+<h3>Fees Details</h3>
+<p>Total Fee: ₹<span id="totalFee">0</span></p>
+<p>Paid Fee: ₹<span id="paidFee">0</span></p>
+<p>Due Fee: ₹<span id="dueFee">0</span></p>
 
-  <hr>
+<hr>
 
-  <h3>Attendance</h3>
-  <p>Attendance Percentage: <span id="attendance">0</span>%</p>
+<h3>Attendance</h3>
+<p>Attendance Percentage: <span id="attendance">0</span>%</p>
 
-  <br>
-  <button onclick="logout()">Logout</button>
+<br>
+<button onclick="logout()">Logout</button>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAw6mNbrIILP9fNNSzAXuPEUsN7x3T0dsY",
-      authDomain: "schoolerp-cb790.firebaseapp.com",
-      projectId: "schoolerp-cb790",
-      storageBucket: "schoolerp-cb790.firebasestorage.app",
-      messagingSenderId: "1098794553484",
-      appId: "1:1098794553484:web:b8d2abe9b829f8fa7d2ba9"
-    };
+  // 🔥 Firebase config (same as login)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAw6mNbrIILP9fNNSzAXuPEUsN7x3T0dsY",
+    authDomain: "schoolerp-cb790.firebaseapp.com",
+    projectId: "schoolerp-cb790",
+    storageBucket: "schoolerp-cb790.firebasestorage.app",
+    messagingSenderId: "1098794553484",
+    appId: "1:1098794553484:web:b8d2abe9b829f8fa7d2ba9"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = "login.html";
-        return;
-      }
-
-      const uid = user.uid;
-
-      const snap = await getDoc(
-        doc(db, "schools", "school1", "students", uid)
-      );
-
-      if (!snap.exists()) {
-        alert("Student data not found");
-        return;
-      }
-
-      const data = snap.data();
-
-      document.getElementById("name").innerText = data.name;
-      document.getElementById("class").innerText = data.class;
-
-      document.getElementById("totalFee").innerText = data.totalFee;
-      document.getElementById("paidFee").innerText = data.paidFee;
-      document.getElementById("dueFee").innerText = data.totalFee - data.paidFee;
-
-      document.getElementById("attendance").innerText = data.attendance;
-    });
-
-    window.logout = async function () {
-      await signOut(auth);
+  // ✅ CHECK LOGIN + LOAD STUDENT DATA
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
       window.location.href = "login.html";
-    };
-  </script>
+      return;
+    }
+
+    const uid = user.uid;
+
+    // 🔥 EXACT PATH (matches your Firestore)
+    const ref = doc(db, "schools", "school1", "students", uid);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+      alert("Student data not found");
+      return;
+    }
+
+    const data = snap.data();
+
+    // ✅ SET DATA
+    document.getElementById("name").innerText = data.name;
+    document.getElementById("class").innerText = data.class;
+
+    document.getElementById("totalFee").innerText = data.totalFee;
+    document.getElementById("paidFee").innerText = data.paidFee;
+    document.getElementById("dueFee").innerText =
+      data.totalFee - data.paidFee;
+
+    document.getElementById("attendance").innerText =
+      data.attendance;
+  });
+
+  // 🔓 LOGOUT
+  window.logout = function () {
+    signOut(auth).then(() => {
+      window.location.href = "login.html";
+    });
+  };
+</script>
 
 </body>
 </html>
