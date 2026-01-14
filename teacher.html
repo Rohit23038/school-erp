@@ -1,33 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Teacher Panel</title>
+  <title>Teacher Dashboard</title>
 </head>
 <body>
 
-<h2>Teacher Panel</h2>
+<h2>Teacher Dashboard</h2>
 
-<p>
-  Student UID:<br>
-  <input id="uid" placeholder="Paste Student UID">
-</p>
-
-<p>
-  Attendance (%):<br>
-  <input id="attendance" type="number" min="0" max="100">
-</p>
-
-<button onclick="updateAttendance()">Update Attendance</button>
-
-<p id="msg"></p>
+<label>Select Class:</label>
+<select id="classSelect">
+  <option value="10">10</option>
+  <option value="11">11</option>
+  <option value="12">12</option>
+</select>
+<button onclick="loadStudents()">Load Students</button>
 
 <hr>
+
+<table border="1" cellpadding="8">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Roll</th>
+      <th>Attendance (%)</th>
+      <th>Update</th>
+    </tr>
+  </thead>
+  <tbody id="studentTable"></tbody>
+</table>
+
+<br>
 <button onclick="logout()">Logout</button>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-  import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+  import {
+    getFirestore,
+    collection,
+    getDocs,
+    query,
+    where,
+    doc,
+    updateDoc
+  } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAw6mNbrIILP9fNNSzAXuPEUsN7x3T0dsY",
@@ -42,30 +58,60 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  // 🔐 Check login
   onAuthStateChanged(auth, (user) => {
     if (!user) {
       window.location.href = "login.html";
     }
   });
 
-  window.updateAttendance = async function () {
-    const uid = document.getElementById("uid").value;
-    const attendance = Number(document.getElementById("attendance").value);
+  // 📥 Load students class-wise
+  window.loadStudents = async function () {
+    const cls = document.getElementById("classSelect").value;
+    const table = document.getElementById("studentTable");
+    table.innerHTML = "";
 
-    try {
-      await updateDoc(
-        doc(db, "schools", "school1", "students", uid),
-        { attendance: attendance }
-      );
+    const q = query(
+      collection(db, "schools", "school1", "students"),
+      where("class", "==", cls)
+    );
 
-      document.getElementById("msg").innerText =
-        "Attendance updated successfully";
+    const snap = await getDocs(q);
 
-    } catch (err) {
-      document.getElementById("msg").innerText = err.message;
-    }
+    snap.forEach((docSnap) => {
+      const s = docSnap.data();
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>${s.name}</td>
+        <td>${s.roll}</td>
+        <td>
+          <input type="number" id="att-${docSnap.id}" value="${s.attendance}">
+        </td>
+        <td>
+          <button onclick="updateAttendance('${docSnap.id}')">
+            Update
+          </button>
+        </td>
+      `;
+
+      table.appendChild(row);
+    });
   };
 
+  // ✏ Update attendance
+  window.updateAttendance = async function (uid) {
+    const value = document.getElementById("att-" + uid).value;
+
+    await updateDoc(
+      doc(db, "schools", "school1", "students", uid),
+      { attendance: Number(value) }
+    );
+
+    alert("Attendance updated");
+  };
+
+  // 🚪 Logout
   window.logout = function () {
     signOut(auth).then(() => {
       window.location.href = "login.html";
