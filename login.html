@@ -1,73 +1,97 @@
 <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>School ERP Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-box {
+      background: #ffffff;
+      width: 320px;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #004aad;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #003080;
+    }
+
+    .register-link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .register-link a {
+      color: #004aad;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
-  <h3>School ERP Login</h3>
+  <div class="login-box">
+    <h2>School ERP Login</h2>
 
-  <input id="email" placeholder="Email"><br><br>
-  <input id="password" type="password" placeholder="Password"><br><br>
-  <button onclick="login()">Login</button>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
 
-  <p id="msg" style="color:red;"></p>
+    <button onclick="login()">Login</button>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    <div class="register-link">
+      New Student? <br>
+      <a href="register.html">Click here for Registration</a>
+    </div>
+  </div>
 
-    // 🔥 YOUR FIREBASE CONFIG (already correct)
-    const firebaseConfig = {
-      apiKey: "AIzaSyAw6mNbrIILP9fNNSzAXuPEUsN7x3T0dsY",
-      authDomain: "schoolerp-cb790.firebaseapp.com",
-      projectId: "schoolerp-cb790",
-      storageBucket: "schoolerp-cb790.firebasestorage.app",
-      messagingSenderId: "1098794553484",
-      appId: "1:1098794553484:web:b8d2abe9b829f8fa7d2ba9"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // 🔐 LOGIN FUNCTION
-    window.login = async function () {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      try {
-        const cred = await signInWithEmailAndPassword(auth, email, password);
-        const uid = cred.user.uid;
-
-        // ✅ CORRECT FIRESTORE PATH
-        const snap = await getDoc(
-          doc(db, "schools", "school1", "users", uid)
-        );
-
-        if (!snap.exists()) {
-          document.getElementById("msg").innerText = "Role not assigned";
-          return;
-        }
-
-        const role = snap.data().role;
-
-        // 🔁 REDIRECT BY ROLE
-        if (role === "admin") {
-          window.location.href = "admin.html";
-        } else if (role === "teacher") {
-          window.location.href = "teacher.html";
-        } else if (role === "student") {
-          window.location.href = "student.html";
-        } else {
-          document.getElementById("msg").innerText = "Invalid role";
-        }
-
-      } catch (err) {
-        document.getElementById("msg").innerText = err.message;
-      }
-    };
+  <script>
+    function login() {
+      alert("Login logic Firebase se connected hoga");
+    }
   </script>
 
 </body>
