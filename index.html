@@ -2,224 +2,135 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Demo College | Official Website</title>
+<title>School ERP | Home</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root{
-  --bg:#f5f7fb;
-  --text:#333;
-  --card:#ffffff;
-  --primary:#0b3c91;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #e9f0ff;
 }
 
-body.dark{
-  --bg:#121212;
-  --text:#f1f1f1;
-  --card:#1e1e1e;
-  --primary:#1e88ff;
+header {
+  background: #003c8f;
+  color: white;
+  padding: 15px;
+  text-align: center;
 }
 
-body{
-  margin:0;
-  font-family:Segoe UI, Arial;
-  background:var(--bg);
-  color:var(--text);
+header h2 {
+  margin: 0;
 }
 
-/* NAVBAR */
-nav{
-  background:var(--primary);
-  color:white;
-  padding:12px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-nav img{
-  height:40px;
-}
-nav a{
-  color:white;
-  margin-left:15px;
-  text-decoration:none;
-  font-size:14px;
-}
-nav button{
-  margin-left:15px;
-  padding:5px 10px;
-  border:none;
-  border-radius:4px;
-  cursor:pointer;
+.container {
+  padding: 20px;
 }
 
-/* BANNER */
-.banner{
-  background:url("https://images.unsplash.com/photo-1523050854058-8df90110c9f1");
-  background-size:cover;
-  background-position:center;
-  height:260px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  text-align:center;
-}
-.banner h1{
-  background:rgba(0,0,0,0.6);
-  padding:15px 25px;
-  border-radius:6px;
+.section-title {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #003c8f;
 }
 
-/* SLIDER */
-.slider{
-  max-width:1000px;
-  margin:30px auto;
-  overflow:hidden;
-  border-radius:8px;
-}
-.slides img{
-  width:100%;
-  display:none;
-}
-.slides img.active{
-  display:block;
+.portal-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
 }
 
-/* SECTION */
-.section{
-  max-width:1000px;
-  margin:auto;
-  padding:30px 20px;
-}
-.section h2{
-  text-align:center;
-  margin-bottom:20px;
+.portal-card:hover {
+  background: #f1f5ff;
 }
 
-/* NOTICE */
-.notice{
-  background:var(--card);
-  padding:15px;
-  border-left:5px solid var(--primary);
-  margin-bottom:10px;
+.portal-icon {
+  font-size: 28px;
+  width: 40px;
+  text-align: center;
 }
 
-/* COURSES */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:15px;
-}
-.box{
-  background:var(--card);
-  padding:18px;
-  border-radius:6px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+.portal-text {
+  font-size: 18px;
+  color: #003c8f;
+  font-weight: bold;
 }
 
-/* PRINCIPAL */
-.principal{
-  display:flex;
-  gap:20px;
-  align-items:center;
-}
-.principal img{
-  width:140px;
-  border-radius:50%;
-}
-
-/* FOOTER */
-footer{
-  background:var(--primary);
-  color:white;
-  text-align:center;
-  padding:12px;
-  font-size:13px;
+.footer {
+  text-align: center;
+  padding: 10px;
+  font-size: 13px;
+  color: #555;
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <div>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Graduation_cap.svg">
-  </div>
-  <div>
-    <a href="index.html">Home</a>
-    <a href="login.html">Login</a>
-    <a href="register.html">Registration</a>
-    <button onclick="toggleDark()">🌙 Dark</button>
-  </div>
-</nav>
+<header>
+  <h2>School / College ERP Portal</h2>
+  <p>Online Academic Services</p>
+</header>
 
-<!-- BANNER -->
-<div class="banner">
-  <h1>Demo College of Higher Education</h1>
+<div class="container">
+
+  <div class="section-title">Online Portals</div>
+
+  <div class="portal-card" onclick="location.href='register.html'">
+    <div class="portal-icon">📝</div>
+    <div class="portal-text">Student Registration Form</div>
+  </div>
+
+  <div class="portal-card">
+    <div class="portal-icon">📋</div>
+    <div class="portal-text">Academic Activity</div>
+  </div>
+
+  <div class="portal-card">
+    <div class="portal-icon">📊</div>
+    <div class="portal-text">Result</div>
+  </div>
+
+  <div class="portal-card">
+    <div class="portal-icon">🎓</div>
+    <div class="portal-text">Admission / Examination Form</div>
+  </div>
+
+  <div class="portal-card" style="background:#fff9c4">
+    <div class="portal-icon">📚</div>
+    <div class="portal-text">Syllabus</div>
+  </div>
+
+  <div class="portal-card">
+    <div class="portal-icon">🔍</div>
+    <div class="portal-text">Entrance</div>
+  </div>
+
+  <div class="portal-card">
+    <div class="portal-icon">💻</div>
+    <div class="portal-text">Online Services for Students</div>
+  </div>
+
+  <div class="portal-card">
+    <div class="portal-icon">🏫</div>
+    <div class="portal-text">Affiliation</div>
+  </div>
+
+  <div class="portal-card">
+    <div class="portal-icon">📧</div>
+    <div class="portal-text">Web Mail</div>
+  </div>
+
 </div>
 
-<!-- SLIDER -->
-<div class="slider">
-  <div class="slides">
-    <img class="active" src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f">
-    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b">
-    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7">
-  </div>
+<div class="footer">
+  © 2026 School ERP System
 </div>
-
-<!-- NOTICE -->
-<div class="section">
-  <h2>📢 Notice Board</h2>
-  <div class="notice">Admissions Open for BA / BSc / BSc Ag (2026)</div>
-  <div class="notice">Last Date for Online Registration: 31 March</div>
-  <div class="notice">Online Fee Payment Mandatory</div>
-</div>
-
-<!-- COURSES -->
-<div class="section">
-  <h2>🎓 Courses Offered</h2>
-  <div class="grid">
-    <div class="box">BA – Bachelor of Arts</div>
-    <div class="box">BSc – Bachelor of Science</div>
-    <div class="box">BSc Agriculture</div>
-    <div class="box">UG All Courses</div>
-  </div>
-</div>
-
-<!-- PRINCIPAL MESSAGE -->
-<div class="section">
-  <h2>🎤 Principal’s Message</h2>
-  <div class="box principal">
-    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-    <p>
-      Welcome to Demo College. Our mission is to provide quality education
-      with discipline, innovation and digital transparency through ERP systems.
-      We wish all students a bright future.
-      <br><br>
-      <b>– Dr. A. K. Sharma (Principal)</b>
-    </p>
-  </div>
-</div>
-
-<footer>
-  © 2026 Demo College | Powered by School ERP
-</footer>
-
-<script>
-let i=0;
-const slides=document.querySelectorAll(".slides img");
-setInterval(()=>{
-  slides[i].classList.remove("active");
-  i=(i+1)%slides.length;
-  slides[i].classList.add("active");
-},3000);
-
-function toggleDark(){
-  document.body.classList.toggle("dark");
-}
-</script>
 
 </body>
 </html>
